@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+import Form from "./components/Form/Form";
+import List from "./components/List/List";
+const DEMO = [
+  { id: "e1", text: "Do all Exercises" },
+  { id: "e2", text: "Finish The course" },
+  { id: "e3", text: "Revise the course" },
+];
 function App() {
+  const [list, setList] = useState(DEMO);
+
+  const addItemHandler = (enteredData) => {
+    setList((prevValue) => {
+      const updatedGoals = [...prevValue];
+      updatedGoals.unshift(enteredData);
+      return updatedGoals;
+    });
+  };
+
+  const deleteItemHandler = (goalId) => {
+    console.log(goalId);
+    setList((prevValue) => {
+      const updatedGoals = prevValue.filter((goal) => goal.id !== goalId);
+      return updatedGoals;
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form onTextInput={addItemHandler} />
+      <List listData={list} onDelete={deleteItemHandler} />
     </div>
   );
 }
